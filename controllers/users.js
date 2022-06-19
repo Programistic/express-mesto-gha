@@ -2,7 +2,7 @@
 
 const User = require('../models/user');
 
-/*
+
 module.exports.getAllUsers = (req, res) => {
   User.find({})
     .then(user => res.send({ data: user }))
@@ -14,7 +14,6 @@ module.exports.getUserById = (req, res) => {
     .then(user => res.send({ data: user }))
     .catch(() => res.status(500).send({ message: 'Ошибка при получении профиля по id' }));
 };
-*/
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body; // получаем из объекта запроса данные пользователя, их надо записать в базу
