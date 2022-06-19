@@ -2,16 +2,16 @@
 
 const User = require('../models/user');
 
-module.exports.getUser = (req, res) => {
-  User.findById(req.params.id)
+module.exports.getAllUsers = (req, res) => {
+  User.find({})
     .then(user => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'Ошибка при получении профиля' }));
+    .catch(() => res.status(500).send({ message: 'Ошибка при получении всех профилей' }));
 };
 
-module.exports.updateUser = (req, res) => {
-  User.findByIdAndUpdate(req.params.id, { name: req.body.name, about: req.body.about, avatar: req.body.avatar })
+module.exports.getUserById = (req, res) => {
+  User.findById(req.params.id)
     .then(user => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'Ошибка при обновлении профиля' }));
+    .catch(() => res.status(500).send({ message: 'Ошибка при получении профиля по id' }));
 };
 
 module.exports.createUser = (req, res) => {
@@ -20,10 +20,4 @@ module.exports.createUser = (req, res) => {
   User.create({ name, about, avatar }) // создаём документ на основе пришедших данных
     .then(user => res.send({ data: user })) // возвращаем клиенту данные
     .catch(err => res.status(500).send({message: 'Ошибка при создании профиля'})); // возвращаем клиенту ошибку
-};
-
-module.exports.deleteUser = (req, res) => {
-  User.findByIdAndRemove(req.params.id)
-    .then(user => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'Ошибка при удалении профиля' }));
 };
