@@ -19,5 +19,5 @@ module.exports.createUser = (req, res) => {
 
   User.create({ name, about, avatar }) // создаём документ на основе пришедших данных
     .then(user => res.send({ data: user })) // возвращаем клиенту данные
-    .catch(err => res.status(500).send({message: 'Ошибка при создании профиля'})); // возвращаем клиенту ошибку
+    .catch(() => res.status(500).send({ message: 'Ошибка при создании профиля' })); // возвращаем клиенту ошибку
 };
