@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
     minlength: 2,
-    maxlength: 30
+    maxlength: 30,
+    required: true
   },
   link: {
     type: String,
@@ -15,12 +15,13 @@ const cardSchema = new mongoose.Schema({
     // ссылка на картинку
   },
   owner: {
-    type: Objectld,
-    required: true,
-    //  ссылка на модель автора карточки
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    required: true
   },
   likes: {
-    type: Objectld,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
     default: []
   },
   createdAt: {
