@@ -2,7 +2,6 @@
 
 const User = require('../models/user');
 
-
 module.exports.getAllUsers = (req, res) => {
   User.find({})
     .then(user => res.send({ data: user }))
@@ -21,9 +20,14 @@ module.exports.createUser = (req, res) => {
   User.create({ name, about, avatar }) // создаём документ на основе пришедших данных
     .then(user => res.status(200).send({ data: user })) // возвращаем клиенту данные
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        res.status(400).send({ message: 'Некорректные данные!' })
-      }
-      res.status(500).send({ message: 'Ошибка при создании профиля!' })
-    }); // возвращаем клиенту ошибку
+      handleError(err, res);  // возвращаем клиенту ошибку
+    });
 };
+
+const handleError = (err, res) => {
+  if (err.name === 'ValidationError' || err.name === 'CastError') {
+    res.status(400).send({ message: 'Некорректные данные!' });
+    return;
+  }
+  res.status(500).send({ message: 'Ошибка не определённого типа!' });
+}
