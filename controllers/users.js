@@ -5,13 +5,27 @@ const User = require('../models/user');
 module.exports.getAllUsers = (req, res) => {
   User.find({})
     .then(user => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'Ошибка при получении всех профилей' }));
+    .catch((err) => {
+      handleError(err, res);  // возвращаем клиенту ошибку
+    });
 };
 
 module.exports.getUserById = (req, res) => {
   User.findById(req.params.id)
     .then(user => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'Ошибка при получении профиля по id' }));
+    .catch((err) => {
+      handleError(err, res);  // возвращаем клиенту ошибку
+    });
+};
+
+module.exports.getUserByIdAndUpdate = (req, res) => {
+  const { name } = req.body;
+
+  User.findByIdAndUpdate(req.params.id, { name: name })
+    .then(user => res.send({ data: user }))
+    .catch((err) => {
+      handleError(err, res);  // возвращаем клиенту ошибку
+    });
 };
 
 module.exports.createUser = (req, res) => {
