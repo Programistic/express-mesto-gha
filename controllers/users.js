@@ -11,7 +11,7 @@ module.exports.getAllUsers = (req, res) => {
 };
 
 module.exports.getUserById = (req, res) => {
-  User.findById(req.params.id)
+  User.findById(req.params._id)
     .then(user => res.send({ data: user }))
     .catch((err) => {
       handleError(err, res);  // возвращаем клиенту ошибку
