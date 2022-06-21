@@ -13,6 +13,13 @@ app.use(bodyParser.json());
 
 app.use('/users', userRouter);
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: '62b1b4a35881f82d426f1164'
+  };
+  next();
+})
+
 app.listen(PORT, () => {
   console.log(`app listening on port ${PORT}`);
 });
