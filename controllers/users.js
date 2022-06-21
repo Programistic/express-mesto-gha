@@ -12,17 +12,29 @@ module.exports.getAllUsers = (req, res) => {
 
 module.exports.getUserById = (req, res) => {
   User.findById(req.params._id)
-    .then(user => res.send({ data: user }))
+    .then(user => {
+      if (!user) {
+        res.status(404).send({ message: 'Пользователь не найден!' })
+        return;
+      }
+      res.send({ data: user })
+    })
     .catch((err) => {
       handleError(err, res);  // возвращаем клиенту ошибку
     });
 };
 
 module.exports.getUserByIdAndUpdate = (req, res) => {
-  const { name } = req.body;
+  const { name, about } = req.body;
 
-  User.findByIdAndUpdate(req.params.id, { name: name })
-    .then(user => res.send({ data: user }))
+  User.findByIdAndUpdate(req.params._id, { name: name, about: about })
+    .then(user => {
+      if (!user) {
+        res.send({ message: 'Пользователь не найден!' });
+        return;
+      }
+      res.send({ data: user })
+    })
     .catch((err) => {
       handleError(err, res);  // возвращаем клиенту ошибку
     });
