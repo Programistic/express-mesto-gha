@@ -25,9 +25,9 @@ module.exports.getUserById = (req, res) => {
 };
 
 module.exports.getUserByIdAndUpdate = (req, res) => {
-  //const { name, about } = req.body;
+  const { name, about } = req.body;
 
-  User.findByIdAndUpdate(req.params._id, { name: req.body.name, about: req.body.about }, { new: true })
+  User.findByIdAndUpdate(req.params._id, { name: name, about: about }, { new: true })
     .then(user => {
       if (!user) {
         res.send({ message: 'Пользователь не найден!' });
