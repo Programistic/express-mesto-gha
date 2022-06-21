@@ -3,7 +3,7 @@ const { getAllUsers, getUserById, getUserByIdAndUpdate, createUser } = require('
 
 userRouter.get('/', getAllUsers);
 userRouter.get('/:_id', getUserById);
-userRouter.get('/me', getUserByIdAndUpdate);
+userRouter.patch('/me', getUserByIdAndUpdate);
 userRouter.post('/', createUser);
 
 module.exports = userRouter;
