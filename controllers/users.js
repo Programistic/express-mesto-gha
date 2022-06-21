@@ -33,7 +33,7 @@ module.exports.getUserByIdAndUpdate = (req, res) => {
         res.send({ message: 'Пользователь не найден!' });
         return;
       }
-      res.send({ data: user })
+      res.status(200).send({ data: user })
     })
     .catch((err) => {
       handleError(err, res);  // возвращаем клиенту ошибку
