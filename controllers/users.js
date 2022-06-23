@@ -72,4 +72,4 @@ const handleError = (err, res) => {
     return;
   }
   res.status(500).send({ message: 'Ошибка не определённого типа!' });
-}
+};

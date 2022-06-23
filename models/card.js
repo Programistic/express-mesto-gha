@@ -12,7 +12,6 @@ const cardSchema = new mongoose.Schema({
   link: {
     type: String,
     required: true,
-    // ссылка на картинку
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
