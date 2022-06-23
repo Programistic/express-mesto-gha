@@ -4,7 +4,7 @@ const Card = require('../models/card');
 
 module.exports.getAllCards = (req, res) => {
   Card.find({})
-    .then(card => res.send({ data: card }))
+    .then(card => res.status(200).send({ card }))
     .catch((err) => {
       handleError(err, res);
     });
@@ -12,9 +12,10 @@ module.exports.getAllCards = (req, res) => {
 
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
+  const owner = req.user._id;
 
-  Card.create({ name, link })
-    .then(card => res.status(200).send({ data: card }))
+  Card.create({ name, link, owner })
+    .then(card => res.status(200).send({ card }))
     .catch((err) => {
       handleError(err, res);
     });
@@ -34,4 +35,4 @@ const handleError = (err, res) => {
     return;
   }
   res.status(500).send({ message: 'Ошибка не определённого типа!' });
-};
+}
