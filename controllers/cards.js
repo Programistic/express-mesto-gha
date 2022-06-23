@@ -4,7 +4,7 @@ const Card = require('../models/card');
 
 module.exports.getAllCards = (req, res) => {
   Card.find({})
-    .then(card => res.status(200).send({ card }))
+    .then(card => res.send({ card }))
     .catch((err) => {
       handleError(err, res);
     });
@@ -15,7 +15,7 @@ module.exports.createCard = (req, res) => {
   const owner = req.user._id;
 
   Card.create({ name, link, owner })
-    .then(card => res.status(200).send({ card }))
+    .then(card => res.send({ card }))
     .catch((err) => {
       handleError(err, res);
     });
@@ -23,7 +23,13 @@ module.exports.createCard = (req, res) => {
 
 module.exports.deleteCardById = (req, res) => {
   Card.delete(req.card._id)
-    .then(card => res.status(200).send({ data: card }))
+    .then(card => {
+      if (!user) {
+        res.status(404).send({ message: 'Карточка не найдена!' })
+        return;
+      }
+      res.status(200).send({ card })
+    })
     .catch((err) => {
       handleError(err, res);
     });
