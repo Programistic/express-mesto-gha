@@ -6,7 +6,17 @@ module.exports.getAllUsers = (req, res) => {
   User.find({})
     .then(user => res.send({ data: user }))
     .catch((err) => {
-      handleError(err, res);  // возвращаем клиенту ошибку
+      handleError(err, res);
+    });
+};
+
+module.exports.createUser = (req, res) => {
+  const { name, about, avatar } = req.body;
+
+  User.create({ name, about, avatar })
+    .then(user => res.status(200).send({ data: user }))
+    .catch((err) => {
+      handleError(err, res);
     });
 };
 
@@ -20,7 +30,7 @@ module.exports.getUserById = (req, res) => {
       res.send({ data: user })
     })
     .catch((err) => {
-      handleError(err, res);  // возвращаем клиенту ошибку
+      handleError(err, res);
     });
 };
 
@@ -36,17 +46,23 @@ module.exports.getUserByIdAndUpdate = (req, res) => {
       res.status(200).send({ data: user })
     })
     .catch((err) => {
-      handleError(err, res);  // возвращаем клиенту ошибку
+      handleError(err, res);
     });
 };
 
-module.exports.createUser = (req, res) => {
-  const { name, about, avatar } = req.body; // получаем из объекта запроса данные пользователя, их надо записать в базу
+module.exports.getUserByIdAndUpdateAvatar = (req, res) => {
+  const { avatar } = req.body;
 
-  User.create({ name, about, avatar }) // создаём документ на основе пришедших данных
-    .then(user => res.status(200).send({ data: user })) // возвращаем клиенту данные
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
+    .then(user => {
+      if (!user) {
+        res.send({ message: 'Пользователь не найден!' });
+        return;
+      }
+      res.status(200).send({ data: user })
+    })
     .catch((err) => {
-      handleError(err, res);  // возвращаем клиенту ошибку
+      handleError(err, res);
     });
 };
 
