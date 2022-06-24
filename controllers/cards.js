@@ -22,9 +22,9 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCardById = (req, res) => {
-  Card.delete(req.card._id)
+  Card.findByIdAndRemove(req.card._id)
     .then(card => {
-      if (!user) {
+      if (!card) {
         res.status(404).send({ message: 'Карточка не найдена!' })
         return;
       }
