@@ -26,4 +26,9 @@ app.use((req, res, next) => {
 app.use('/users', userRouter);
 app.use('/cards', cardsRouter);
 
+app.use((req, res, next) => {
+  res.status(404).send({ message: 'Указан неверный путь!' });
+  next();
+})
+
 app.listen(PORT_3000);
