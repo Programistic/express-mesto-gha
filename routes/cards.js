@@ -3,8 +3,8 @@ const { getAllCards, createCard, deleteCardById, likeCard, dislikeCard } = requi
 
 cardRouter.get('/', getAllCards);
 cardRouter.post('/', createCard);
-cardRouter.delete('/:_id', deleteCardById);
-cardRouter.put('/:_id/likes', likeCard);
-cardRouter.delete('/:_id/likes', dislikeCard);
+cardRouter.delete('/:_cardId', deleteCardById);
+cardRouter.put('/:_cardId/likes', likeCard);
+cardRouter.delete('/:_cardId/likes', dislikeCard);
 
 module.exports = cardRouter;
