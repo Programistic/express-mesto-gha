@@ -1,7 +1,7 @@
 const Card = require('../models/card');
-const { handleError } = require('../utils/constants');
+const { handleCardNotFound, handleError } = require('../errors/errors');
 
-module.exports.getAllCards = (req, res) => {
+const getAllCards = (req, res) => {
   Card.find({})
     .then(card => res.send({ card }))
     .catch((err) => {
@@ -9,10 +9,9 @@ module.exports.getAllCards = (req, res) => {
     });
 };
 
-module.exports.createCard = (req, res) => {
+const createCard = (req, res) => {
   const { name, link } = req.body;
   const owner = req.user._id;
-
   Card.create({ name, link, owner })
     .then(card => res.send({ card }))
     .catch((err) => {
@@ -20,13 +19,10 @@ module.exports.createCard = (req, res) => {
     });
 };
 
-module.exports.deleteCardById = (req, res) => {
+const deleteCardById = (req, res) => {
   Card.findByIdAndRemove(req.params._id)
     .then(card => {
-      if (!card) {
-        res.status(404).send({ message: 'Карточка не найдена!' })
-        return;
-      }
+      handleCardNotFound(card);
       res.send({ card })
     })
     .catch((err) => {
@@ -34,13 +30,10 @@ module.exports.deleteCardById = (req, res) => {
     });
 };
 
-module.exports.likeCard = (req, res) => {
+const likeCard = (req, res) => {
   Card.findByIdAndUpdate(req.params._id, { $addToSet: { likes: req.user._id } }, { new: true, runValidators: true })
     .then(card => {
-      if (!card) {
-        res.status(404).send({ message: 'Карточка не найдена!' })
-        return;
-      }
+      handleCardNotFound(card);
       res.send({ card })
     })
     .catch((err) => {
@@ -48,16 +41,21 @@ module.exports.likeCard = (req, res) => {
     });
 };
 
-module.exports.dislikeCard = (req, res) => {
+const dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(req.params._id, { $pull: { likes: req.user._id } }, { new: true, runValidators: true })
     .then(card => {
-      if (!card) {
-        res.status(404).send({ message: 'Карточка не найдена!' })
-        return;
-      }
+      handleCardNotFound(card);
       res.send({ card })
     })
     .catch((err) => {
       handleError(err, res);
     });
 };
+
+module.exports = {
+  getAllCards,
+  createCard,
+  deleteCardById,
+  likeCard,
+  dislikeCard
+}
