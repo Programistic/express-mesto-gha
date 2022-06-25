@@ -1,13 +1,13 @@
 const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require('../utils/constants');
 
-const handleCardNotFound = (card) => {
+const handleCardNotFound = (card, res) => {
   if (!card) {
     res.status(NOT_FOUND).send({ message: 'Карточка не найдена!' })
     return;
   }
 }
 
-const handleUserNotFound = (user) => {
+const handleUserNotFound = (user, res) => {
   if (!user) {
     res.status(NOT_FOUND).send({ message: 'Пользователь не найден!' })
     return;
