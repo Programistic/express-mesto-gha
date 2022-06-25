@@ -9,7 +9,7 @@ const cardsRouter = require('./routes/cards');
 const bodyParser = require('body-parser');
 const { PORT_3000 = 3000 } = process.env;
 
-const { BAD_REQUEST } = require('../utils/constants');
+const { BAD_REQUEST } = require('./utils/constants');
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true
