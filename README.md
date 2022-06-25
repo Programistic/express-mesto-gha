@@ -1,28 +1,22 @@
 [![Tests](https://github.com/Programistic/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/Programistic/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests](https://github.com/Programistic/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/Programistic/express-mesto-gha/actions/workflows/tests-14-sprint.yml)
-# Проект Mesto фронтенд + бэкенд
 
+# Бэкэнд проекта "Место"
 
+### https://
 
-## Настройка бейджей статуса тестов
-Перед началом работы над проектом рекомендуется исправить бейджи, отражающие статус прохождения тестов.
-Для этого замените разметку бейджей на следующий фрагмент, подставив вместо `${имя_пользователя}` и `${имя_репозитория}` соответствующие значения.
+### Учебный проект от Яндекс-Практикум
 
-```
-[![Tests for sprint 13](https://github.com/${Programistic}/${express-mesto-gha}/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/${Programistic}/${express-mesto-gha}/actions/workflows/tests-13-sprint.yml) 
+##### Функциональность:
+Организация на сервере базы данных для хранения профиля пользователя и добавленных им фотографий
 
-[![Tests for sprint 14](https://github.com/${Programistic}/${express-mesto-gha}/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/${Programistic}/${express-mesto-gha}/actions/workflows/tests-14-sprint.yml)
-```
+##### Используемые технологии:
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JavaScript
+- ESLint
 
+##### Планы по доработке проекта:
+- Добавить в проект функцию регистрации и авторизации пользователя
 
-## Директории
-
-`/routes` — папка с файлами роутера  
-`/controllers` — папка с файлами контроллеров пользователя и карточки   
-`/models` — папка с файлами описания схем пользователя и карточки  
-  
-Остальные директории вспомогательные, создаются при необходимости разработчиком
-
-## Запуск проекта
-
-`npm run start` — запускает сервер   
-`npm run dev` — запускает сервер с hot-reload
