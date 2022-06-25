@@ -1,75 +1,65 @@
-// Модуль отвечает за взаимодействие с моделью 'user'
-
 const User = require('../models/user');
+const { handleUserNotFound, handleError } = require('../errors/errors');
 
-module.exports.getAllUsers = (req, res) => {
+const getAllUsers = (req, res) => {
   User.find({})
-    .then(user => res.send({ data: user }))
+    .then(user => res.send({ user }))
     .catch((err) => {
       handleError(err, res);
     });
 };
 
-module.exports.createUser = (req, res) => {
+const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
-
   User.create({ name, about, avatar })
-    .then(user => res.status(200).send({ data: user }))
+    .then(user => res.send({ user }))
     .catch((err) => {
       handleError(err, res);
     });
 };
 
-module.exports.getUserById = (req, res) => {
-  User.findById(req.params._id)
+const getUserById = (req, res) => {
+  const { _id } = req.params;
+  User.findById(_id)
     .then(user => {
-      if (!user) {
-        res.status(404).send({ message: 'Пользователь не найден!' })
-        return;
-      }
-      res.send({ data: user })
+      handleUserNotFound(user, res);
+      res.send({ user });
     })
     .catch((err) => {
       handleError(err, res);
     });
 };
 
-module.exports.getUserByIdAndUpdate = (req, res) => {
+const getUserByIdAndUpdate = (req, res) => {
   const { name, about } = req.body;
-
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
+  const { _id } = req.user;
+  User.findByIdAndUpdate(_id, { name, about }, { new: true, runValidators: true })
     .then(user => {
-      if (!user) {
-        res.send({ message: 'Пользователь не найден!' });
-        return;
-      }
-      res.status(200).send({ data: user })
+      handleUserNotFound(user, res);
+      res.send({ user });
     })
     .catch((err) => {
       handleError(err, res);
     });
 };
 
-module.exports.getUserByIdAndUpdateAvatar = (req, res) => {
+const getUserByIdAndUpdateAvatar = (req, res) => {
   const { avatar } = req.body;
-
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
+  const { _id } = req.user;
+  User.findByIdAndUpdate(_id, { avatar }, { new: true })
     .then(user => {
-      if (!user) {
-        res.send({ message: 'Пользователь не найден!' });
-        return;
-      }
-      res.status(200).send({ data: user })
+      handleUserNotFound(user, res);
+      res.send({ user });
     })
     .catch((err) => {
       handleError(err, res);
     });
 };
 
-const handleError = (err, res) => {
-  if (err.name === 'ValidationError' || err.name === 'CastError') {
-    res.status(400).send({ message: 'Некорректные данные!' });
-    return;
-  }
-  res.status(500).send({ message: 'Ошибка не определённого типа!' });
+module.exports = {
+  getAllUsers,
+  createUser,
+  getUserById,
+  getUserByIdAndUpdate,
+  getUserByIdAndUpdateAvatar
 };

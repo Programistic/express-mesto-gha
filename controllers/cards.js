@@ -20,7 +20,8 @@ const createCard = (req, res) => {
 };
 
 const deleteCardById = (req, res) => {
-  Card.findByIdAndRemove(req.params._id)
+  const { _id } = req.params;
+  Card.findByIdAndRemove(_id)
     .then(card => {
       handleCardNotFound(card, res);
       res.send({ card });
@@ -31,7 +32,8 @@ const deleteCardById = (req, res) => {
 };
 
 const likeCard = (req, res) => {
-  Card.findByIdAndUpdate(req.params._id, { $addToSet: { likes: req.user._id } }, { new: true, runValidators: true })
+  const { _id } = req.params;
+  Card.findByIdAndUpdate(_id, { $addToSet: { likes: req.user._id } }, { new: true, runValidators: true })
     .then(card => {
       handleCardNotFound(card, res);
       res.send({ card });
@@ -42,7 +44,8 @@ const likeCard = (req, res) => {
 };
 
 const dislikeCard = (req, res) => {
-  Card.findByIdAndUpdate(req.params._id, { $pull: { likes: req.user._id } }, { new: true, runValidators: true })
+  const { _id } = req.params;
+  Card.findByIdAndUpdate(_id, { $pull: { likes: req.user._id } }, { new: true, runValidators: true })
     .then(card => {
       handleCardNotFound(card, res);
       res.send({ card });
@@ -58,4 +61,4 @@ module.exports = {
   deleteCardById,
   likeCard,
   dislikeCard
-}
+};
