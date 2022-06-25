@@ -9,6 +9,8 @@ const cardsRouter = require('./routes/cards');
 const bodyParser = require('body-parser');
 const { PORT_3000 = 3000 } = process.env;
 
+const { BAD_REQUEST } = require('../utils/constants');
+
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true
 });
@@ -27,7 +29,7 @@ app.use('/users', userRouter);
 app.use('/cards', cardsRouter);
 
 app.use((req, res, next) => {
-  res.status(404).send({ message: 'Указан неверный путь!' });
+  res.status(BAD_REQUEST).send({ message: 'Ресурс не найден!' });
   next();
 })
 

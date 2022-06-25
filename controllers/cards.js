@@ -1,6 +1,5 @@
-// Модуль отвечает за взаимодействие с моделью 'card'
-
 const Card = require('../models/card');
+const { handleError } = require('../utils/constants');
 
 module.exports.getAllCards = (req, res) => {
   Card.find({})
@@ -15,7 +14,7 @@ module.exports.createCard = (req, res) => {
   const owner = req.user._id;
 
   Card.create({ name, link, owner })
-    .then(card => res.status(200).send({ card }))
+    .then(card => res.send({ card }))
     .catch((err) => {
       handleError(err, res);
     });
@@ -28,7 +27,7 @@ module.exports.deleteCardById = (req, res) => {
         res.status(404).send({ message: 'Карточка не найдена!' })
         return;
       }
-      res.status(200).send({ card })
+      res.send({ card })
     })
     .catch((err) => {
       handleError(err, res);
@@ -42,7 +41,7 @@ module.exports.likeCard = (req, res) => {
         res.status(404).send({ message: 'Карточка не найдена!' })
         return;
       }
-      res.status(200).send({ card })
+      res.send({ card })
     })
     .catch((err) => {
       handleError(err, res);
@@ -56,17 +55,9 @@ module.exports.dislikeCard = (req, res) => {
         res.status(404).send({ message: 'Карточка не найдена!' })
         return;
       }
-      res.status(200).send({ card })
+      res.send({ card })
     })
     .catch((err) => {
       handleError(err, res);
     });
 };
-
-const handleError = (err, res) => {
-  if (err.name === 'ValidationError' || err.name === 'CastError') {
-    res.status(400).send({ message: 'Некорректные данные!' });
-    return;
-  }
-  res.status(500).send({ message: 'Ошибка не определённого типа!' });
-}
