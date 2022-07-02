@@ -1,5 +1,7 @@
 const User = require('../models/user');
 const { handleUserFound, handleError } = require('../errors/errors');
+const { UNAUTHORIZED } = require('../utils/constants');
+const jwt = require('jsonwebtoken');
 
 const getAllUsers = (req, res) => {
   User.find({})
@@ -55,10 +57,39 @@ const getUserByIdAndUpdateAvatar = (req, res) => {
     });
 };
 
+const login = (req, res) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        res.status(UNAUTHORIZED).send({ message: 'Неправильная почта или пароль!' });
+      } else {
+        return bcrypt.compare(password, user.password);
+      }
+    })
+    .then((matched) => {
+      if (!matched) {
+        res.status(UNAUTHORIZED).send({ message: 'Неправильная почта или пароль!' });
+      } else {
+        const token = jwt.sign(
+          { _id: '62b1b7cfc7a30e8c967386df' },
+          '123',
+          { expiresIn: '7d' }
+        )
+        res.send({ message: 'Всё верно!', token });
+      }
+    })
+    .catch(() => {
+      res.status(UNAUTHORIZED).send({ message: 'Ошибка авторизации!' });
+    });
+}
+
 module.exports = {
   getAllUsers,
   createUser,
   getUserById,
   getUserByIdAndUpdate,
   getUserByIdAndUpdateAvatar,
+  login,
 };
