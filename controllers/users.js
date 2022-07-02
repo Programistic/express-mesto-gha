@@ -10,8 +10,10 @@ const getAllUsers = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
+  const { name, about, avatar, email, password } = req.body;
+  const hashPassword = bcrypt.hash(password, 10);
+
+  User.create({ name, about, avatar, email, hashPassword })
     .then((user) => res.send({ user }))
     .catch((err) => {
       handleError(err, res);
