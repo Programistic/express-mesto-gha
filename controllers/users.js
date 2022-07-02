@@ -1,7 +1,8 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const { handleUserFound, handleError } = require('../errors/errors');
 const { UNAUTHORIZED } = require('../utils/constants');
-const jwt = require('jsonwebtoken');
 
 const getAllUsers = (req, res) => {
   User.find({})
@@ -12,10 +13,22 @@ const getAllUsers = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { name, about, avatar, email, password } = req.body;
+  const {
+    name,
+    about,
+    avatar,
+    email,
+    password,
+  } = req.body;
   const hashPassword = bcrypt.hash(password, 10);
 
-  User.create({ name, about, avatar, email, hashPassword })
+  User.create({
+    name,
+    about,
+    avatar,
+    email,
+    hashPassword,
+  })
     .then((user) => res.send({ user }))
     .catch((err) => {
       handleError(err, res);
@@ -63,10 +76,9 @@ const login = (req, res) => {
   User.findOne({ email })
     .then((user) => {
       if (!user) {
-        res.status(UNAUTHORIZED).send({ message: 'Неправильная почта или пароль!' });
-      } else {
-        return bcrypt.compare(password, user.password);
+        return res.status(UNAUTHORIZED).send({ message: 'Неправильная почта или пароль!' });
       }
+      return bcrypt.compare(password, user.password);
     })
     .then((matched) => {
       if (!matched) {
@@ -75,15 +87,15 @@ const login = (req, res) => {
         const token = jwt.sign(
           { _id: '62b1b7cfc7a30e8c967386df' },
           '123',
-          { expiresIn: '7d' }
-        )
+          { expiresIn: '7d' },
+        );
         res.send({ message: 'Всё верно!', token });
       }
     })
     .catch(() => {
       res.status(UNAUTHORIZED).send({ message: 'Ошибка авторизации!' });
     });
-}
+};
 
 module.exports = {
   getAllUsers,
