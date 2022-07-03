@@ -46,8 +46,12 @@ const getUserById = (req, res) => {
     });
 };
 
-const getCurrentUser = () => {
-  User.findOne({});
+const getCurrentUser = (req, res) => {
+  User.find({})
+    .then((user) => res.send({ user }))
+    .catch((err) => {
+      handleError(err, res);
+    });
 };
 
 const getUserByIdAndUpdate = (req, res) => {
