@@ -46,6 +46,10 @@ const getUserById = (req, res) => {
     });
 };
 
+const getCurrentUser = () => {
+  User.findOne({});
+};
+
 const getUserByIdAndUpdate = (req, res) => {
   const { name, about } = req.body;
   const { _id } = req.user;
@@ -99,6 +103,7 @@ const login = (req, res) => {
 
 module.exports = {
   getAllUsers,
+  getCurrentUser,
   createUser,
   getUserById,
   getUserByIdAndUpdate,

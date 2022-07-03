@@ -1,4 +1,9 @@
-const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require('../utils/constants');
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  SERVER_ERROR,
+  UNAUTHORIZED,
+} = require('../utils/constants');
 
 const handleCardFound = (card, res) => {
   if (!card) {
@@ -16,6 +21,10 @@ const handleUserFound = (user, res) => {
   }
 };
 
+const handleAuthError = (res) => {
+  res.status(UNAUTHORIZED).send({ message: 'Необходима авторизация' });
+};
+
 const handleError = (err, res) => {
   if (err.name === 'ValidationError' || err.name === 'CastError') {
     res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные!' });
@@ -27,5 +36,6 @@ const handleError = (err, res) => {
 module.exports = {
   handleCardFound,
   handleUserFound,
+  handleAuthError,
   handleError,
 };
