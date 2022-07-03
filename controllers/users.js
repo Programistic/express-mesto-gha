@@ -81,19 +81,19 @@ const getUserByIdAndUpdateAvatar = (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ email })
+  User.findOne({ email }).select('+password') //  идентификация по почте
     .then((user) => {
       if (!user) {
         return res.status(UNAUTHORIZED).send({ message: 'Неправильная почта или пароль!' });
       }
-      return bcrypt.compare(password, user.password);
+      return bcrypt.compare(password, user.password); //  аутентификация
     })
     .then((matched) => {
       if (!matched) {
         res.status(UNAUTHORIZED).send({ message: 'Неправильная почта или пароль!' });
       } else {
         const token = jwt.sign(
-          { _id: '62b1b7cfc7a30e8c967386df' },
+          { _id: req.user._id },
           '123',
           { expiresIn: '7d' },
         );

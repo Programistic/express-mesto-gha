@@ -26,13 +26,8 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: false,
   },
 });
-
-/*
-userSchema.statics.checkEmail = function(email) {
-  return validator.isEmail(email);
-}
-*/
 
 module.exports = mongoose.model('user', userSchema);
