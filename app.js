@@ -1,5 +1,5 @@
 const express = require('express');
-//  const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi } = require('celebrate');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const userRouter = require('./routes/users');
@@ -20,7 +20,24 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/signup', createUser);
+app.post(
+  '/signup',
+  celebrate(
+    {
+      body: Joi.object().keys(
+        {
+          name: Joi.string().min(2).max(30),
+          about: Joi.string().min(2).max(30),
+          avatar: Joi.string().pattern(new RegExp()),
+          email: Joi.string().required().email(),
+          password: Joi.string().required(),
+        },
+      ),
+    },
+  ),
+  createUser,
+);
+
 app.post('/signin', login);
 
 app.use(auth);
