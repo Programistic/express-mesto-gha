@@ -28,17 +28,30 @@ app.post(
         {
           name: Joi.string().min(2).max(30),
           about: Joi.string().min(2).max(30),
-          //  avatar: Joi.string().pattern(new RegExp()),
-          //  email: Joi.string().required().email(),
-          //  password: Joi.string().required(),
+          avatar: Joi.string().pattern(/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/),
+          email: Joi.string().required().email(),
+          password: Joi.string().required(),
         },
-      ).unknown(true),
+      ),
     },
   ),
   createUser,
 );
 
-app.post('/signin', login);
+app.post(
+  '/signin',
+  celebrate(
+    {
+      body: Joi.object().keys(
+        {
+          email: Joi.string().required().email(),
+          password: Joi.string().required(),
+        },
+      ),
+    },
+  ),
+  login,
+);
 
 app.use(auth);
 
