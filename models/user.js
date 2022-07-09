@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { default: isEmail } = require('validator/lib/isEmail');
-const { default: isURL } = require('validator/lib/isURL');
+const { URLPattern } = require('../utils/constants');
+
 //  const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
@@ -20,7 +21,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
-      validator: (v) => isURL(v),
+      validator: (v) => URLPattern.test(v),
       message: 'Неверный формат ссылки!',
     },
   },
