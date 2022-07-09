@@ -101,7 +101,7 @@ const login = (req, res) => {
           '123',
           { expiresIn: '7d' },
         );
-        res.send({ message: 'Всё верно!', token });
+        res.status(200).send({ message: 'Всё верно!', token });
       }
     })
     .catch(() => {
