@@ -1,5 +1,5 @@
 const express = require('express');
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, Segments, errors } = require('celebrate');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const userRouter = require('./routes/users');
@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post(
   '/signup',
   celebrate({
-    body: Joi.object().keys({
+    [Segments.BODY]: Joi.object().keys({
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
       avatar: Joi.string().pattern(URLPattern),
@@ -38,7 +38,7 @@ app.post(
 app.post(
   '/signin',
   celebrate({
-    body: Joi.object().keys({
+    [Segments.BODY]: Joi.object().keys({
       email: Joi.string().required().email(),
       password: Joi.string().required(),
     }),
@@ -50,6 +50,8 @@ app.use(auth);
 
 app.use('/users', userRouter);
 app.use('/cards', cardsRouter);
+
+app.use(errors());
 
 app.use((req, res, next) => {
   res.status(NOT_FOUND).send({ message: 'Ресурс не найден!' });
