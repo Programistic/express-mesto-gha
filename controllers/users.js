@@ -88,21 +88,22 @@ const login = (req, res) => {
   User.findOne({ email }).select('+password') //  идентификация по почте
     .then((user) => {
       if (!user) {
-        return res.status(UNAUTHORIZED).send({ message: 'Неправильная почта или пароль!' });
+        res.status(UNAUTHORIZED).send({ message: 'Неправильная почта или пароль2!' });
+        return;
       }
-      return bcrypt.compare(password, user.password); //  аутентификация
-    })
-    .then((matched) => {
-      if (!matched) {
-        res.status(UNAUTHORIZED).send({ message: 'Неправильная почта или пароль!' });
-      } else {
-        const token = jwt.sign(
-          { _id: req.user._id },
-          '123',
-          { expiresIn: '7d' },
-        );
-        res.status(200).send({ message: 'Всё верно!', token });
-      }
+      bcrypt.compare(password, user.password) //  аутентификация
+        .then((matched) => {
+          if (!matched) {
+            res.status(UNAUTHORIZED).send({ message: 'Неправильная почта или пароль!' });
+            return;
+          }
+          const token = jwt.sign(
+            { _id: user._id },
+            '123',
+            { expiresIn: '7d' },
+          );
+          res.send({ message: 'Всё верно!', token });
+        });
     })
     .catch(() => {
       res.status(UNAUTHORIZED).send({ message: 'Ошибка авторизации!' });
