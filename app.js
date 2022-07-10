@@ -13,7 +13,7 @@ const auth = require('./middlewares/auth');
 const { createUser, login } = require('./controllers/users');
 const { URLPattern } = require('./utils/constants');
 
-//  const { NOT_FOUND } = require('./utils/constants');
+const { NOT_FOUND } = require('./utils/constants');
 
 const { PORT = 3000 } = process.env;
 
@@ -57,7 +57,6 @@ app.use('/users', userRouter);
 app.use('/cards', cardsRouter);
 
 app.use(errors());
-
 
 app.use((req, res, next) => {
   res.status(NOT_FOUND).send({ message: 'Ресурс не найден!' });
