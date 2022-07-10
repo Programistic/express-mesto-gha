@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const { handleUserFound, handleError, handleConflictError } = require('../errors/errors');
-//  const { UNAUTHORIZED } = require('../utils/constants');
 const AuthError = require('../errors/AuthError');
 
 const getAllUsers = (req, res, next) => {
@@ -45,8 +44,8 @@ const getUserById = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
-  User.findById(req.user._id)
-    //  .then((user) => res.send({ user }))
+  const { _id } = req.user;
+  User.findById(_id)
     .then((user) => {
       handleUserFound(user, res);
     })
@@ -86,15 +85,11 @@ const login = (req, res, next) => {
     .then((user) => {
       if (!user) {
         throw new AuthError('Неправильная почта или пароль!');
-        //  res.status(UNAUTHORIZED).send({ message: 'Неправильная почта или пароль2!' });
-        //  return;
       }
       bcrypt.compare(password, user.password) //  аутентификация
         .then((matched) => {
           if (!matched) {
             throw new AuthError('Неправильная почта или пароль!');
-            //  res.status(UNAUTHORIZED).send({ message: 'Неправильная почта или пароль!' });
-            //  return;
           }
           const token = jwt.sign(
             { _id: user._id },
@@ -106,7 +101,6 @@ const login = (req, res, next) => {
     })
     .catch(() => {
       throw new AuthError('Ошибка авторизации!');
-      //  res.status(UNAUTHORIZED).send({ message: 'Ошибка авторизации!' });
     })
     .catch(next);
 };
