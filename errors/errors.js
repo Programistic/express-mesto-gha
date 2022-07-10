@@ -23,7 +23,9 @@ const handleUserFound = (user, res) => {
 };
 
 const handleConflictError = (err, next) => {
-  if (err.code === 11000) {
+  if (err.name === 'ValidationError' || err.name === 'CastError') {
+    throw new RequestError('Переданы некорректные данные!');
+  } else if (err.code === 11000 || err.name === 'MongoError') {
     throw new ConflictError('Email уже существует!');
   } else {
     next(err);
