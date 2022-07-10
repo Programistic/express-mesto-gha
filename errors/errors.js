@@ -1,13 +1,13 @@
-const {
-  BAD_REQUEST,
-  NOT_FOUND,
-  SERVER_ERROR,
-  UNAUTHORIZED,
-} = require('../utils/constants');
+const FoundError = require('./FoundError');
+const AuthError = require('./AuthError');
+const RequestError = require('./RequestError');
+const ServerError = require('./ServerError');
+const ConflictError = require('./ConflictError');
 
 const handleCardFound = (card, res) => {
   if (!card) {
-    res.status(NOT_FOUND).send({ message: 'Карточка не найдена!' });
+    throw new FoundError('Карточка не найдена!');
+    //  res.status(NOT_FOUND).send({ message: 'Карточка не найдена!' });
   } else {
     res.send({ card });
   }
@@ -15,21 +15,31 @@ const handleCardFound = (card, res) => {
 
 const handleUserFound = (user, res) => {
   if (!user) {
-    res.status(NOT_FOUND).send({ message: 'Пользователь не найден!' });
+    throw new FoundError('Пользователь не найден!');
+    //  res.status(NOT_FOUND).send({ message: 'Пользователь не найден!' });
   } else {
     res.send({ user });
   }
 };
 
-const handleAuthError = (res) => {
-  res.status(UNAUTHORIZED).send({ message: 'Необходима авторизация' });
+const handleConflictError = (err) => {
+  if (err.code === 11000) {
+    throw new ConflictError('Email уже существует!');
+  }
 };
 
-const handleError = (err, res) => {
+const handleAuthError = () => {
+  throw new AuthError('Необходима авторизация!');
+  //  res.status(UNAUTHORIZED).send({ message: 'Необходима авторизация' });
+};
+
+const handleError = (err) => {
   if (err.name === 'ValidationError' || err.name === 'CastError') {
-    res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные!' });
+    throw new RequestError('Переданы некорректные данные!');
+    //  res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные!' });
   } else {
-    res.status(SERVER_ERROR).send({ message: 'Внутренняя ошибка сервера!' });
+    throw new ServerError('Внутренняя ошибка сервера!');
+    //  res.status(SERVER_ERROR).send({ message: 'Внутренняя ошибка сервера!' });
   }
 };
 
@@ -37,5 +47,6 @@ module.exports = {
   handleCardFound,
   handleUserFound,
   handleAuthError,
+  handleConflictError,
   handleError,
 };
