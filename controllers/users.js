@@ -50,9 +50,6 @@ const getCurrentUser = (req, res, next) => {
     .then((user) => {
       handleUserFound(user, res);
     })
-    .catch((err) => {
-      handleError(err, next);
-    })
     .catch(next);
 };
 
