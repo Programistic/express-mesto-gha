@@ -1,8 +1,8 @@
-class serverError extends Error {
+class ServerError extends Error {
   constructor(message) {
     super(message);
     this.statusCode = 500;
   }
 }
 
-module.exports = serverError;
+module.exports = ServerError;
