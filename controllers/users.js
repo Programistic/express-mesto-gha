@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const { handleUserFound, handleError, handleConflictError } = require('../errors/errors');
 const AuthError = require('../errors/AuthError');
+const { SECRET_KEY } = require('../utils/constants');
 
 const getAllUsers = (req, res, next) => {
   User.find({})
@@ -93,7 +94,7 @@ const login = (req, res, next) => {
           }
           const token = jwt.sign(
             { _id: user._id },
-            '123',
+            SECRET_KEY,
             { expiresIn: '7d' },
           );
           res.send({ message: 'Успешная авторизация!', token });
