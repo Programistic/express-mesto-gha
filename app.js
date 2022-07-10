@@ -58,6 +58,11 @@ app.use('/cards', cardsRouter);
 
 app.use(errors());
 
+app.use((err, req, res, next) => {
+  res.status(err.statusCode).send({ message: err.message });
+  next();
+});
+
 app.use((req, res, next) => {
   res.status(NOT_FOUND).send({ message: 'Ресурс не найден!' });
   next();
