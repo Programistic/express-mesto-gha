@@ -5,7 +5,7 @@ const getAllCards = (req, res, next) => {
   Card.find({})
     .then((card) => res.send({ card }))
     .catch((err) => {
-      handleError(err);
+      handleError(err, next);
     })
     .catch(next);
 };
@@ -16,7 +16,7 @@ const createCard = (req, res, next) => {
   Card.create({ name, link, owner })
     .then((card) => res.send({ card }))
     .catch((err) => {
-      handleError(err);
+      handleError(err, next);
     })
     .catch(next);
 };
@@ -28,7 +28,7 @@ const deleteCardById = (req, res, next) => {
       handleCardFound(card, res);
     })
     .catch((err) => {
-      handleError(err);
+      handleError(err, next);
     })
     .catch(next);
 };
@@ -44,7 +44,7 @@ const likeCard = (req, res, next) => {
       handleCardFound(card, res);
     })
     .catch((err) => {
-      handleError(err);
+      handleError(err, next);
     })
     .catch(next);
 };
@@ -60,7 +60,7 @@ const dislikeCard = (req, res, next) => {
       handleCardFound(card, res);
     })
     .catch((err) => {
-      handleError(err);
+      handleError(err, next);
     })
     .catch(next);
 };

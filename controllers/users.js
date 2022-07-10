@@ -27,7 +27,7 @@ const createUser = (req, res, next) => {
       email: user.email,
     }))
     .catch((err) => {
-      handleError(err);
+      handleError(err, next);
       next(err);
     })
     .catch((err) => {
@@ -44,7 +44,7 @@ const getUserById = (req, res, next) => {
       handleUserFound(user, res);
     })
     .catch((err) => {
-      handleError(err);
+      handleError(err, next);
       next(err);
     })
     .catch(next);
@@ -54,7 +54,7 @@ const getCurrentUser = (req, res, next) => {
   User.find({})
     .then((user) => res.send({ user }))
     .catch((err) => {
-      handleError(err);
+      handleError(err, next);
     })
     .catch(next);
 };
@@ -67,7 +67,7 @@ const getUserByIdAndUpdate = (req, res, next) => {
       handleUserFound(user, res);
     })
     .catch((err) => {
-      handleError(err);
+      handleError(err, next);
     })
     .catch(next);
 };
@@ -80,7 +80,7 @@ const getUserByIdAndUpdateAvatar = (req, res, next) => {
       handleUserFound(user, res);
     })
     .catch((err) => {
-      handleError(err);
+      handleError(err, next);
     })
     .catch(next);
 };
