@@ -22,7 +22,7 @@ const handleUserFound = (user, res) => {
   }
 };
 
-const handleConflictError = (err, res) => {
+const handleConflictError = (err) => {
   if (err.code === 11000) {
     throw new ConflictError('Email уже существует!');
   }

@@ -63,7 +63,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   res.status(err.statusCode).send({ message: err.message });
 });
 
