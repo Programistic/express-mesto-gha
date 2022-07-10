@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const { handleUserFound, handleError, handleConflictError } = require('../errors/errors');
+const { handleUserFound, handleError } = require('../errors/errors');
 //  const { UNAUTHORIZED } = require('../utils/constants');
 const AuthError = require('../errors/AuthError');
 
@@ -14,7 +14,7 @@ const getAllUsers = (req, res, next) => {
     .catch(next);
 };
 
-const createUser = (req, res, next) => {
+const createUser = (req, res) => {
   bcrypt.hash(req.body.password, 10)
     .then((hashPassword) => User.create({
       name: req.body.name,
@@ -31,13 +31,7 @@ const createUser = (req, res, next) => {
     }))
     .catch((err) => {
       handleError(err);
-      next();
-    })
-    .catch((err) => {
-      handleConflictError(err, res);
-      next();
-    })
-    .catch(next);
+    });
 };
 
 const getUserById = (req, res, next) => {
