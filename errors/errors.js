@@ -16,10 +16,8 @@ const handleCardFound = (card, res) => {
 const handleUserFound = (user, res) => {
   if (!user) {
     throw new FoundError('Пользователь не найден!');
-    //  res.status(NOT_FOUND).send({ message: 'Пользователь не найден!' });
-  } else {
-    res.send({ user });
   }
+  return res.send({ user });
 };
 
 const handleConflictError = (err, next) => {
