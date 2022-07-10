@@ -40,14 +40,16 @@ const getUserById = (req, res, next) => {
     })
     .catch((err) => {
       handleError(err, next);
-      next(err);
     })
     .catch(next);
 };
 
 const getCurrentUser = (req, res, next) => {
   User.find({})
-    .then((user) => res.send({ user }))
+    //  .then((user) => res.send({ user }))
+    .then((user) => {
+      handleUserFound(user, res);
+    })
     .catch((err) => {
       handleError(err, next);
     })
