@@ -2,12 +2,25 @@ const FoundError = require('./FoundError');
 const AuthError = require('./AuthError');
 const RequestError = require('./RequestError');
 const ConflictError = require('./ConflictError');
+const UnauthRequestError = require('./UnauthRequestError');
 
 const handleCardFound = (card, res) => {
   if (!card) {
     throw new FoundError('Карточка не найдена!');
   } else {
     res.send({ card });
+  }
+};
+
+const handleDeleteCardFound = (card) => {
+  if (!card) {
+    throw new FoundError('Удаляемая карточка не найдена!');
+  }
+};
+
+const handleCheckCardOwner = (card, req) => {
+  if (req.user._id !== card.owner.toString()) {
+    throw new UnauthRequestError('Удалить карточку может только её владелец!');
   }
 };
 
@@ -43,6 +56,8 @@ const handleError = (err, next) => {
 
 module.exports = {
   handleCardFound,
+  handleDeleteCardFound,
+  handleCheckCardOwner,
   handleUserFound,
   handleAuthError,
   handleConflictError,

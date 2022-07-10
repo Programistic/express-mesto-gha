@@ -1,5 +1,10 @@
 const Card = require('../models/card');
-const { handleCardFound, handleError } = require('../errors/errors');
+const {
+  handleCardFound,
+  handleDeleteCardFound,
+  handleError,
+  handleCheckCardOwner,
+} = require('../errors/errors');
 
 const getAllCards = (req, res, next) => {
   Card.find({})
@@ -23,12 +28,13 @@ const createCard = (req, res, next) => {
 
 const deleteCardById = (req, res, next) => {
   const { _id } = req.params;
-  Card.findByIdAndRemove(_id)
+  Card.findById(_id)
     .then((card) => {
-      handleCardFound(card, res);
-    })
-    .catch((err) => {
-      handleError(err, next);
+      handleDeleteCardFound(card);
+      handleCheckCardOwner(card, req);
+      Card.findByIdAndRemove(_id)
+        .then((removeCard) => res.send(removeCard))
+        .catch(next);
     })
     .catch(next);
 };
