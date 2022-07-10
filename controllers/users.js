@@ -28,11 +28,9 @@ const createUser = (req, res, next) => {
     }))
     .catch((err) => {
       handleError(err, next);
-      next(err);
     })
     .catch((err) => {
-      handleConflictError(err);
-      next(err);
+      handleConflictError(err, next);
     })
     .catch(next);
 };
