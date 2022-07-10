@@ -45,8 +45,7 @@ const getUserById = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
-  const { _id } = req.user;
-  User.findById(_id)
+  User.findById(req.user._id)
     //  .then((user) => res.send({ user }))
     .then((user) => {
       handleUserFound(user, res);
