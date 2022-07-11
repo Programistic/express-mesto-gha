@@ -1,17 +1,12 @@
 const express = require('express');
-const {
-  celebrate,
-  Joi,
-  Segments,
-  errors,
-} = require('celebrate');
+const { errors } = require('celebrate');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const userRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
+const signup = require('./routes/signup');
+const signin = require('./routes/signin');
 const auth = require('./middlewares/auth');
-const { createUser, login } = require('./controllers/users');
-const { URLPattern } = require('./utils/constants');
 
 const FoundError = require('./errors/FoundError');
 
@@ -26,31 +21,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post(
-  '/signup',
-  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      name: Joi.string().min(2).max(30),
-      about: Joi.string().min(2).max(30),
-      avatar: Joi.string().pattern(URLPattern),
-      email: Joi.string().required().email(),
-      password: Joi.string().required(),
-    }),
-  }),
-  createUser,
-);
-
-app.post(
-  '/signin',
-  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required(),
-    }),
-  }),
-  login,
-);
-
+app.use(signup);
+app.use(signin);
 app.use(auth);
 
 app.use('/users', userRouter);
